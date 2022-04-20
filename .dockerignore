@@ -1,0 +1,9 @@
+.gitignore
+node_modules
+.dockerignore
+Dockerfile
+server.crt
+server.key
+grpc
+Dockerfile.local
+envoy-override-dgo.yaml

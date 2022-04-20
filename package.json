@@ -1,0 +1,19 @@
+{
+    "name": "test-grpc-proxy",
+    "version": "1.0.0",
+    "description": "Hosts a simple grpc endpoint for testing grpc proxy",
+    "main": "index.js",
+    "type": "module",
+    "repository": "https://github.com/camfairchild/test-grpc-proxy",
+    "author": "camfairchild",
+    "license": "MIT",
+    "scripts": {
+        "start": "nodemon index.js"
+    },
+    "dependencies": {
+        "@grpc/grpc-js": "^1.6.6"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    }
+}
