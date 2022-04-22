@@ -27,7 +27,17 @@ static_resources:
                   grpc: {}
                 route:
                   cluster: backend_grpc_service
-          http_filters:
+          http_filters:          
+          - name: envoy.filters.http.lua
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
+              # Use lua filter to change content-type header to match upstream grpc content-type
+              inline_code: |
+                function envoy_on_response(response_handle)
+                  if (response_handle:headers() and string.find(response_handle:headers():get("content-type"), "application/grpc")) then
+                    response_handle:headers():replace("content-type", "application/grpc+proto")
+                  end
+                end
           - name: envoy.filters.http.router
             typed_config:
               "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
@@ -42,11 +52,11 @@ static_resources:
         explicit_http_config:
           http2_protocol_options: {}
     load_assignment:
-      - name: backend_grpc_service
+      cluster_name: backend_grpc_service
       endpoints:
       - lb_endpoints:
         - endpoint:
             address:
               socket_address:
-                address: localhost
+                address: 127.0.0.1
                 port_value: 8091 # local grpc port
